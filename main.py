@@ -11,7 +11,7 @@ TXT_FILE = "text.txt"
 PCAP_PATH = f"{OUTPUT_DIR}{PCAP_FILE}"
 TXT_PATH = f"{OUTPUT_DIR}{TXT_FILE}"
 
-TIMEOUT_BUFFER = 5
+TIMEOUT_BUFFER = 10
 
 
 def build(tag: str) -> None:
@@ -21,7 +21,7 @@ def build(tag: str) -> None:
             "build",
             "-t",
             tag,
-            Path(__file__).parent.parent.absolute(),
+            Path(__file__).parent.absolute(),
         ]
     )
 
@@ -45,12 +45,14 @@ def start(tag: str, timeout: str) -> str:
         stderr=subprocess.PIPE,
     )
     stdout, stderr = process.communicate()
+    if not stdout:
+        return b""
     # remove endline
     return stdout.decode()[:-1]
 
 
 def cp_output(container_id: str, dest_dir: str) -> None:
-    curr_dir = Path(__file__).parent.parent.joinpath(dest_dir)
+    curr_dir = Path(__file__).parent.joinpath(dest_dir)
     subprocess.run(
         [
             "docker",
@@ -63,7 +65,7 @@ def cp_output(container_id: str, dest_dir: str) -> None:
         [
             "docker",
             "cp",
-            f"{container_id}:{TXT_FILE}",
+            f"{container_id}:{TXT_PATH}",
             curr_dir.joinpath(TXT_FILE).absolute(),
         ]
     )
@@ -76,8 +78,8 @@ def kill_container(container_id: str) -> None:
 if __name__ == "__main__":
     arg_parser: ArgumentParser = ArgumentParser()
     arg_parser.add_argument("--tag", "-t", default="cs455-final")
-    arg_parser.add_argument("--timeout", "-s", default="90")
-    arg_parser.add_argument("--dest", "-d", default="out")
+    arg_parser.add_argument("--timeout", "-s", default="30")
+    arg_parser.add_argument("--dest", "-d", default="")
     args: Namespace = arg_parser.parse_args()
     build(args.tag)
     container_id: str = start(args.tag, args.timeout)
