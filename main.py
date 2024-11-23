@@ -7,11 +7,13 @@ import subprocess
 OUTPUT_DIR = "/root/"
 PCAP_FILE = "cap.pcap"
 TXT_FILE = "text.txt"
+SOL_LOG_FILE = "sol_log.txt"
 
 PCAP_PATH = f"{OUTPUT_DIR}{PCAP_FILE}"
 TXT_PATH = f"{OUTPUT_DIR}{TXT_FILE}"
+SOL_LOG_PATH = f"{OUTPUT_DIR}{SOL_LOG_FILE}"
 
-TIMEOUT_BUFFER = 10
+TIMEOUT_BUFFER = 5
 
 
 def build(tag: str) -> None:
@@ -39,6 +41,8 @@ def start(tag: str, timeout: str) -> str:
             f"PCAP_PATH={PCAP_PATH}",
             "-e",
             f"TXT_PATH={TXT_PATH}",
+            "-e",
+            f"SOL_LOG_PATH={SOL_LOG_PATH}",
             tag,
         ],
         stdout=subprocess.PIPE,
@@ -69,6 +73,14 @@ def cp_output(container_id: str, dest_dir: str) -> None:
             curr_dir.joinpath(TXT_FILE).absolute(),
         ]
     )
+    subprocess.run(
+        [
+            "docker",
+            "cp",
+            f"{container_id}:{SOL_LOG_PATH}",
+            curr_dir.joinpath(SOL_LOG_FILE).absolute(),
+        ]
+    )
 
 
 def kill_container(container_id: str) -> None:
@@ -78,7 +90,7 @@ def kill_container(container_id: str) -> None:
 if __name__ == "__main__":
     arg_parser: ArgumentParser = ArgumentParser()
     arg_parser.add_argument("--tag", "-t", default="cs455-final")
-    arg_parser.add_argument("--timeout", "-s", default="30")
+    arg_parser.add_argument("--timeout", "-s", default="15")
     arg_parser.add_argument("--dest", "-d", default="")
     args: Namespace = arg_parser.parse_args()
     build(args.tag)

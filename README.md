@@ -1,6 +1,6 @@
 # CS455 Group 6 Final Project
 
-Repo to run compiled python script group6.py
+Repo to run solution.py and group6.py simultaneously and capture the network traffic
 
 ## Requirements
 
@@ -10,4 +10,4 @@ Repo to run compiled python script group6.py
 ## Instructions
 
 - run main.py
-- cap.pcap and text.txt will be outputted to root directory of the repo
+- cap.pcap, text.txt, and sol_log.txt will be outputted to root directory of the repo
