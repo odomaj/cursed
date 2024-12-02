@@ -10,7 +10,7 @@ Repo to run solution.py and group6.py simultaneously and capture the network tra
 ## Instructions
 
 - run main.py
-- cap.pcap, text.txt, and sol_log.txt will be outputted to root directory of the repo
+- loc_cap.pcap, net_cap.pcap, text.txt, and sol_log.txt will be outputted to root directory of the repo
 
 ## Action 1
 
