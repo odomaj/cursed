@@ -5,11 +5,13 @@ import subprocess
 
 
 OUTPUT_DIR = "/root/"
-PCAP_FILE = "cap.pcap"
+NET_PCAP_FILE = "net_cap.pcap"
+LOC_PCAP_FILE = "loc_cap.pcap"
 TXT_FILE = "text.txt"
 SOL_LOG_FILE = "sol_log.txt"
 
-PCAP_PATH = f"{OUTPUT_DIR}{PCAP_FILE}"
+NET_PCAP_PATH = f"{OUTPUT_DIR}{NET_PCAP_FILE}"
+LOC_PCAP_PATH = f"{OUTPUT_DIR}{LOC_PCAP_FILE}"
 TXT_PATH = f"{OUTPUT_DIR}{TXT_FILE}"
 SOL_LOG_PATH = f"{OUTPUT_DIR}{SOL_LOG_FILE}"
 
@@ -38,7 +40,9 @@ def start(tag: str, timeout: str) -> str:
             "-e",
             f"TIMEOUT={timeout}",
             "-e",
-            f"PCAP_PATH={PCAP_PATH}",
+            f"NET_PCAP_PATH={NET_PCAP_PATH}",
+            "-e",
+            f"LOC_PCAP_PATH={LOC_PCAP_PATH}",
             "-e",
             f"TXT_PATH={TXT_PATH}",
             "-e",
@@ -61,8 +65,16 @@ def cp_output(container_id: str, dest_dir: str) -> None:
         [
             "docker",
             "cp",
-            f"{container_id}:{PCAP_PATH}",
-            curr_dir.joinpath(PCAP_FILE).absolute(),
+            f"{container_id}:{NET_PCAP_PATH}",
+            curr_dir.joinpath(NET_PCAP_FILE).absolute(),
+        ]
+    )
+    subprocess.run(
+        [
+            "docker",
+            "cp",
+            f"{container_id}:{LOC_PCAP_PATH}",
+            curr_dir.joinpath(LOC_PCAP_FILE).absolute(),
         ]
     )
     subprocess.run(

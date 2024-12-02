@@ -1,7 +1,10 @@
 #! /bin/bash
 
-screen -dmS cap
-screen -S cap -X screen timeout ${TIMEOUT}s tcpdump -s 65535 -w ${PCAP_PATH}
+screen -dmS loc
+screen -S loc -X screen timeout ${TIMEOUT}s tcpdump -i lo -s 65535 -w ${LOC_PCAP_PATH}
+
+screen -dmS net
+screen -S net -X screen timeout ${TIMEOUT}s tcpdump -s 65535 -w ${NET_PCAP_PATH}
 
 sleep 1
 

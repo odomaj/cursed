@@ -20,7 +20,7 @@ def action5() -> None:
     log("****STARTING ACTION 5****")
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        server_socket.bind(("127.0.0.1", 42001))
+        server_socket.bind(("0.0.0.0", 42001))
         server_socket.listen(1)
     except Exception as e:
         log(f"Caught {e}\n****ENDING ACTION 5 EARLY****")
@@ -47,7 +47,7 @@ def action6() -> None:
     log("****STARTING ACTION 6****")
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         try:
-            s.connect(("0.0.0.0", 1234))
+            s.connect(("127.0.0.1", 1234))
             instructions: str = s.recv(1024).decode()
             log(instructions)
             message: str = "google.com"
